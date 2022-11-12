@@ -109,6 +109,16 @@ console.log(sumOfArray1);
 
 5. #### Polyfill of bind
 ```javascript
+Function.prototype.customBind = function(...args){
+    var callback = this,
+        ctx = args.splice(1);
+    return function(...a){        
+        callback.call(args[0], ...[...ctx, ...a]);
+    }
+}
+
+const result2 = printName.customBind(myName, "Ahmad",);
+result2("Finland");
 ```
 ---
 **[⬆ Back to Top](#table-of-contents)**
@@ -116,12 +126,38 @@ console.log(sumOfArray1);
 
 6. #### Polyfill of call
 ```javascript
+Function.prototype.customCall = function(context, ...args){
+    let currentContext = context || globalThis;
+    let randomProp = Math.random();
+    while( currentContext[randomProp] !== undefined ){
+        randomProp = Math.random();
+    }
+    currentContext[randomProp] = this;
+    let result = currentContext[randomProp](...args);
+    delete currentContext[randomProp];
+    return result;
+}
+
+printName.customCall(myName, "Ahmad", "khan");
 ```
 ---
 **[⬆ Back to Top](#table-of-contents)**
 
 7. #### Polyfill of apply
 ```javascript
+Function.prototype.customApply = function(context, args){
+    let currentContext = context || globalThis;
+    let uniqueProp = Math.random();
+    while( currentContext[uniqueProp] !== undefined ){
+        uniqueProp = Math.random();
+    }
+    currentContext[uniqueProp] = this;
+    let result = currentContext[uniqueProp](...args);
+    delete currentContext[uniqueProp];
+    return result;
+}
+
+printName.customApply(myName, ["Ahmad", "Finland"]);
 ```
 ---
 **[⬆ Back to Top](#table-of-contents)**
@@ -226,7 +262,7 @@ Promise.customPromiseRace([number, login, signup ])
 ---
 **[⬆ Back to Top](#table-of-contents)**
 
-11.  ####  Polyfill of promise.finally
+11. #### Polyfill of promise.finally
 ```javascript
 ```
 ---
@@ -234,12 +270,80 @@ Promise.customPromiseRace([number, login, signup ])
 
 12. ####  Polyfill of splice
 ```javascript
+if (!Array.prototype.customSplice) {
+  Array.prototype.customSplice = function(startIndex, numItems){
+    let array = this;
+    let endIndex = startIndex + numItems;
+
+    let itemsBeforeSplice = []; // array till startIndex
+    let splicedItems = []; // removed items array
+    let itemsAfterSplice = []; // array from endIndex
+
+    for( let i = 0; i < array.length; i++ ){
+        if( i < startIndex ){ itemsBeforeSplice.push( array[i] ); } 
+        if( i >= startIndex && i < endIndex ){ splicedItems.push( array[i] ); }
+        if( i >= endIndex ){ itemsAfterSplice.push( array[i] ); }      
+    }
+
+    // Insert all arguments/parameters after numItems
+    for(let i = 2;i < arguments.length; i++){
+      itemsBeforeSplice.push(arguments[i]);
+    }
+
+    // Combine before/after arrays
+    var remainingItems = itemsBeforeSplice.concat( itemsAfterSplice );
+
+    // Rewrite array
+    for(let i = 0, len=Math.max( array.length, remainingItems.length ); i < len; i++ ){
+      if( remainingItems.length > i ){
+        array[i] = remainingItems[i];
+      } else {
+        array.pop();
+      }
+    }
+    return splicedItems;
+  }
+}
+
+// declare an array
+const arr = [1,2,3,4,5,6]; 
+// call custom splice() on array to add elements
+console.log(arr.customSplice(2,0,9,10));
+// call custom splice() on array to replace elements
+// console.log(arr.customSplice(2,2,8,9,10));
+// call custom splice() on array to delete elements
+// console.log(arr.customSplice(3,1));
+
+console.log("Final array: ",arr);
+// add - [1, 2, 9, 10, 3, 4, 5, 6]
+// replace - [1, 2, 8, 9, 10, 5, 6]
+// delete - [1, 2, 3, 5, 6]
+
 ```
 ---
 **[⬆ Back to Top](#table-of-contents)**
 
 13. #### Polyfill of getElementByClassName
 ```javascript
+document.findByClass = function(requiredClass) {
+  const root = this.body;
+
+  function search(node) {
+    let result = [];
+
+    if(node.classList.contains(requiredClass)) {
+      return node;
+    }
+
+    for (const element of node.children) {
+      result = result.concat(search(element));
+    }
+
+    return result;
+  }
+
+  return search(root);
+}
 ```
 ---
 **[⬆ Back to Top](#table-of-contents)**
