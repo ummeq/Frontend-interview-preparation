@@ -21,7 +21,7 @@
 | 11   | [Polyfill of promise.finally](#polyfill-of-promisefinally) 
 | 12   | [Polyfill of splice](#polyfill-of-splice)
 | 13   | [Polyfill of getElementByClassName](#polyfill-of-getelementbyclassname)
-
+| 14   | [Polyfill of Deep Copy](#polyfill-of-deepcopy)
 1. ### Polyfill of forEach
 ```javascript
 Array.prototype.myForEach = function(callback){
@@ -344,6 +344,32 @@ document.findByClass = function(requiredClass) {
 
   return search(root);
 }
+```
+---
+**[⬆ Back to Top](#table-of-contents)**
+14. #### Polyfill of Deep Copy
+```javascript
+const obj = {
+   a1: {
+       b1: {
+           c1: "SS"
+       }
+    }
+}
+const deepCopy = (val) => {
+   if (["string", "boolean", "number"].includes(typeof val)) {
+      return val;
+   } else if (Array.isArray(val)) {
+      return val.map(item => deepCopy(item))
+   } else {
+      return Object.keys(val).reduce((acc, key) => {
+        acc[key] = deepCopy(val[key]);
+        return acc;
+     }, {});
+  }
+  return clone
+}
+console.log(deepCopy(obj));
 ```
 ---
 **[⬆ Back to Top](#table-of-contents)**
