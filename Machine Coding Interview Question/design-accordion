@@ -1,0 +1,103 @@
+Codepen Link - https://codepen.io/habibaqadri/pen/vYVJxzM
+
+**************** HTML Code ******************
+
+<html>
+  <body>
+    <div class="accordion">
+      <div class="panel">
+        <div class="label">Section One</div>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="label">Section Two</div>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="label">Section Three</div>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+      </div>
+     <div>
+    </div>
+  </body>
+</html>
+
+
+***************************** CSS Code **********************
+
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #C576F6;
+  color: white;
+  
+}
+
+.accordion {
+  max-width: 800px;
+}
+
+.accordion .panel {
+  position: relative;
+  margin: 10px 20px;
+  
+}
+
+.accordion .panel .label { 
+  position: relative;
+  padding: 10px;
+  text-color: white;
+  background-color: #880ED4;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.accordion .panel .label::before {
+  content: '+';
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 1.5em;
+}
+
+.accordion .panel .content{
+  position: relative;
+  padding: 0px;
+  background: #A020F0;
+  height: 0;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+
+.accordion .panel.active .content{
+  height: 150px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.accordion .panel.active .label::before {
+  content: '-';
+}
+
+
+********************* JS Code *******************
+
+const accordion = document.getElementsByClassName('panel');
+
+for(i=0; i<accordion.length; i++){
+  accordion[i].addEventListener('click',function(){
+    this.classList.toggle('active')
+  });
+}
