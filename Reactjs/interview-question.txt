@@ -1,0 +1,160 @@
+1. What is difference between virtual dom and shadow dom in React js?
+Ans. 
+Virtual DOM
+- Used for solving performance issues
+- This technology uses JavaScript libraries such as React.js and Vue.js.
+- It creates a copy of the entire DOM in the memory.
+- Since this technology creates a copy of the DOM, it does not implement CSS scoping.
+
+Shadow DOM
+- Used for encapsulating and isolating elements.
+- The web browser itself implements this technology.
+- It does not create a complete representation of the entire DOM. It adds subtrees of DOM elements into the document instead of adding them to the main DOM tree.
+- This technology creates separate subtrees of the DOM elements and therefore facilitates their isolation and enables CSS scoping.
+
+****************************************************
+2. What is controlled and uncontrolled component in React js
+Features	                   Controlled Component	                                          Uncontrolled Component
+Value Management	           Managed by React state	                                        Managed by component's own internal state
+User Interaction	           Parent component updates state on user interaction	            Component updates own internal state on user interaction
+Data Flow	                   Data flows from parent component to component	                Data flows within the component
+Debugging	                   Easier to debug	                                              More difficult to debug
+Performance	                 Generally faster as there's less state management	            Generally slower as there's more state management
+Code Complexity	             Less complex code	                                            More complex code
+Best Practices	             Considered a best practice	                                    Considered an alternate approach
+
+In React, controlled components refer to components that have their state and behavior controlled by the parent component. 
+These components rely on props passed down from the parent component to update their state and behavior. 
+
+Uncontrolled components refer to components that manage their own state internally. 
+They use a ref to access the DOM element's current value and update the state accordingly.
+
+In real-world example, in a payment system, you would use a controlled component to handle the form inputs where user enter the card information, 
+so that the state of the form data is managed by the parent component and it can be sent to the server for processing. 
+An uncontrolled component could be used for something like a search bar, where the search results are displayed below the bar, 
+and the state of the search bar is managed internally by the component.
+
+*********************************************************
+
+3. What is hooks in React js
+React Hooks are simple JavaScript functions that we can use to isolate the reusable part from a functional component. 
+Hooks can be stateful and can manage side-effects.
+
+React provides a bunch of standard in-built hooks:
+
+useState: To manage states. Returns a stateful value and an updater function to update it.
+
+useEffect: To manage side-effects like API calls, subscriptions, timers, mutations, and more.
+
+useContext: To return the current value for a context.
+
+useReducer: A useState alternative to help with complex state management.
+
+useCallback: It returns a memorized version of a callback to help a child component not re-render unnecessarily.
+
+useMemo: It returns a memoized value that helps in performance optimizations.
+
+useRef: It returns a ref object with a .current property. The ref object is mutable. It is mainly used to access a child component imperatively.
+
+useLayoutEffect: It fires at the end of all DOM mutations. It's best to use useEffect as much as possible over this one as the useLayoutEffect fires synchronously.
+
+useDebugValue: Helps to display a label in React DevTools for custom hooks.
+
+******************************************************************
+
+4. What is jsx, babel, webpack
+
+JSX — or JavaScript XML — is a syntax extension to standard JavaScript which allows us to incorporate XML-like syntax into our code. 
+For example, with JSX we are allowed to write the following:
+
+const greeting = <h1>Hello, World!</h1>
+
+This is where things start to get interesting. If you are familiar with HTML, the above should look familiar. 
+With standard JavaScript, however, something like the following would be required to achieve the same result:
+
+const greeting = document.createElement("h1");
+greeting.innerText = "Hello, World!";
+
+As it turns out, JSX is actually transpiled into standard JavaScript behind the scenes. 
+React uses a preprocessor called Babel to translate our code before it is rendered in the browser.
+
+we can see exactly how our code will be converted:
+
+const greeting = React.createElement("h1", null, "Hello, World!");
+
+This should look familiar! The main difference here is that React uses its own copy of the DOM — 
+the virtual DOM — in order to dynamically handle component loading and unloading (or mounting, in React terminology.)
+
+So, how does React incorporate Babel? 
+This is where Webpack comes in. Webpack is a package bundler for JavaScript that compiles modules into a single source, which is then rendered in the browser. 
+
+Webpack first determines the file hierarchy for the project and generates a dependency graph. 
+From the dependency graph it compiles the code to a single source, 
+using Babel to translate and remove the import and export statements, and convert JSX into standard JavaScript.
+
+*************************************************
+
+5 - What is Redux
+Redux is an open-source JavaScript library for managing and centralizing application state. 
+It is most commonly used with libraries such as React or Angular for building user interfaces. 
+
+************************************************
+
+6- What is reducer, action, store in Redux
+
+Redux follows a simple principle: all application state is held in a single object.
+
+This object is called the store, and it's what makes Redux so powerful. 
+Instead of having scattered state across multiple components, all of your state is stored in one place, making it easier to manage and keep track of.
+
+But how does Redux actually work? Let me break it down for you:
+
+📌 1. Action - An action is a plain JavaScript object that describes what happened in your application. 
+It includes a type and some data related to the action.
+
+📌 2. Reducer - A reducer is a function that takes the current state of your application and an action, and returns a new state based on that action. 
+It's like a recipe for updating your application state.
+
+📌 3. Store - The store is the object that holds your application state. 
+It has a few important methods, like dispatch, which sends an action to the reducer, and getState, which returns the current state of your application.
+
+📌 4. View - Finally, your components read from the store to display the current state of your application. 
+When the state changes, your components are automatically updated with the new data.
+
+********************************************************
+7- Why do we need middleware(thunk/saga) in react-redux ?
+Why can't action handle it ?
+
+Redux middleware function provides a medium to interact with dispatched action before they reach the reducer. 
+Customized middleware functions can be created by writing high order functions. 
+Middleware is nothing but a code that you can insert between the request and the response.
+
+When can we use middleware?
+The action/reducer pattern is very clean for updating the state within an application. 
+👉 But what if we need to communicate with an external API? 
+👉 Or what if we want to log all of the actions that are dispatched?
+👉 Redux itself is synchronous, so how the async operations like network request work with Redux? 
+👉 We need a way to run side effects without disrupting our action/reducer flow.
+
+Usecases: Redux Middleware allows you to intercept every action sent to the reducer so you can make changes to the action or cancel the action.
+👉 logging, 
+👉 crash reporting, 
+👉 routing, 
+👉 handling asynchronous requests, etc...
+
+Implementation: You can create a customized middleware in React with high-order functions. 
+Besides multiple Middleware in redux can be combined together.
+
+To apply middleware, we can call applyMiddleware() function in the createStore() method. 
+import loggingMiddleware from "./loggingMiddleware";
+const store = createStore(
+ rootReducer,
+ initialState,
+ applyMiddleware(loggingMiddleware)
+);
+
+*************************************************************
+8 - Explain data flow in Redux
+React, a Javascript library, uses unidirectional data flow. The data from the parent is known as props. 
+You can only transfer data from parent to child and not vice versa. 
+This means that the child components cannot update or modify the data on their own, makeing sure that a clean data flow architecture is followed.
